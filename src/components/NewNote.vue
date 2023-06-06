@@ -48,7 +48,6 @@ export default {
       console.log(this.pin);
     },
     async archiveNote() {
-      this.showForm();
       if (this.title === '' && this.content === '') {
         this.showForm();
       }else{
