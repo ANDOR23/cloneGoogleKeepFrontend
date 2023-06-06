@@ -1,55 +1,65 @@
 import { defineStore } from 'pinia';
-import { getAllNotes, getArchivedNotes, changePage, setNote, updateNote, deleteNote } from 'src/boot/axiosActions';
+import { getAllNotes, getArchivedNotes, changePage, setNote, updateNote, deleteNote, archiveNote } from 'src/boot/axiosActions';
 
-export const notesStore = defineStore('notesStore',{
+export const notesStore = defineStore('notesStore', {
   state: () => ({
     notes: [],
     archivedNotes: [],
     totalpages: 0,
-    searchQuery: ''
+    searchQuery: '',
+    originalNotes: [],
+    mergedNotes: []
   }),
-  getters:{
-    getData(state){
+  getters: {
+    getData(state) {
       return state.notes
-    },
-    filteredNotes() {
-      if (!this.searchQuery) {
-        return this.data;
-      }
-
-      const query = this.searchQuery.toLowerCase();
-      return this.data.filter((note) => {
-        return (
-          note.title.toLowerCase().includes(query) ||
-          note.content.toLowerCase().includes(query)
-        );
-      });
     },
   },
   actions: {
     setSearchQuery(query) {
       this.searchQuery = query;
+      if (!this.searchQuery) {
+        this.setData()
+        return this.notes;
+      }
+      const querySearch = this.searchQuery.toLowerCase()
+      const filteredData = this.mergedNotes.filter(item => {
+        return (
+          item?.title?.toLowerCase().includes(querySearch) ||
+          item?.content?.toLowerCase().includes(querySearch)
+        )
+      })
+      if (filteredData != null) {
+        this.notes.data = filteredData
+        console.log(this.notes);
+        return this.notes
+      }else{
+        this.notes = null
+        return this.notes
+      }
+
     },
     async setData() {
       try {
         const response = await getAllNotes();
         this.notes = response.value
+        this.originalNotes = response.value
         this.totalpages = response.value.links.length
       } catch (error) {
         console.log(error);
       }
     },
-    async setArchivedNotes(){
+    async setArchivedNotes() {
       try {
         const response = await getArchivedNotes();
         this.archivedNotes = response.value
-        console.log('desde store',this.archivedNotes);
         this.totalpages = response.value.links.length
+        this.mergedNotes = [...this.notes.data, ...this.archivedNotes.data]
       } catch (error) {
         console.log(error);
       }
     },
-    async changeArchivedPage(archived ,page) {
+    async changeArchivedPage(archived, page) {
       try {
         const response = await changePage(archived, page);
         this.archivedNotes = response.value
@@ -67,7 +77,7 @@ export const notesStore = defineStore('notesStore',{
         console.log(error);
       }
     },
-    async setNewNote(title, content, pin, archive){
+    async setNewNote(title, content, pin, archive) {
       try {
         const response = await setNote(title, content, pin, archive)
         console.log(response.data);
@@ -76,7 +86,8 @@ export const notesStore = defineStore('notesStore',{
         console.log(error);
       }
     },
-    async updateNote(id, title, content, pin, archive){
+    async updateNote(id, title, content, pin, archive) {
+      console.log(id, title, content, pin, archive);
       try {
         const response = await updateNote(id, title, content, pin, archive)
         console.log(response.data)
@@ -85,7 +96,16 @@ export const notesStore = defineStore('notesStore',{
         console.log(error);
       }
     },
-    async deleteNote(id){
+    async archiveNote(id) {
+      try {
+        const response = await archiveNote(id)
+        console.log(response.data)
+        return response.data
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteNote(id) {
       try {
         await deleteNote(id)
       } catch (error) {

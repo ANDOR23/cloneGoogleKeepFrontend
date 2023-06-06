@@ -1,7 +1,10 @@
 <template>
   <q-page class="flex column">
     <NewNote />
-    <div class="flex wrap row justify-evenly q-pa-md q-border-dark">
+    <div v-if="notes.data?.length === 0" class="flex wrap row justify-evenly q-pa-md q-border-dark">
+      <p>No hay resultados que coincidan.</p>
+    </div>
+    <div v-else class="flex wrap row justify-evenly q-pa-md q-border-dark">
       <NoteCard v-for="item in notes.data" :key="item?.id" :data="item" />
     </div>
   </q-page>
@@ -19,7 +22,7 @@ import { notesStore } from 'stores/dataStore'
 export default defineComponent({
   name: 'IndexPage',
   components: { NoteCard, NewNote },
-  
+
   setup() {
     const data = notesStore();
 
@@ -32,6 +35,7 @@ export default defineComponent({
     })
     onMounted(() => {
       data.setData();
+      data.setArchivedNotes();//se obtiene la data de las notas archivadas para poder hacer la busqueda de todas las notas agregadas
     });
     watch(
       () => data.notes,
@@ -48,7 +52,7 @@ export default defineComponent({
   },
   methods: {
     changePage() {
-      this.data.changePage('',this.currentPage)
+      this.data.changePage('', this.currentPage)
     }
   }
 })

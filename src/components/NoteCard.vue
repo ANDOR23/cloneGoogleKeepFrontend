@@ -1,8 +1,8 @@
 <template>
     <q-card flat bordered class="my-card" @click="openModalNote">
-        <div v-if="data.tittle || data.content === null">
+        <div v-if="data.title === null && data.content === null">
             <q-card-section>
-                <div class="text-h6 non-selectable">Nota vacía...</div>
+                <div class="text-h6 non-selectable">Nota vacía</div>
             </q-card-section>
         </div>
         <div v-else>
@@ -10,7 +10,7 @@
                 <div class="text-h6 non-selectable">{{ data.title }}</div>
             </q-card-section>
             <q-card-section class="q-pt-none non-selectable">
-                {{ data.content }}
+                {{ data?.content }}
             </q-card-section>
         </div>
 

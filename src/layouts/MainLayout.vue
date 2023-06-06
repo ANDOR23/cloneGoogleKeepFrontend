@@ -12,7 +12,7 @@
           </q-avatar>
           keep
         </q-toolbar-title>
-        <q-input bg-color="gray" dark standout bottom-slots v-model="search" @input="handleSearch" placeholder="Buscar" >
+        <q-input bg-color="gray" dark standout bottom-slots v-model="search" placeholder="Buscar" >
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -52,17 +52,35 @@ export default {
   name: 'MainLayout',
   components: {NewNote},
   setup () {
+    const data = notesStore();
 
+    // const search = ref('')
     const leftDrawerOpen = ref(false)
 
     return {
-      search: ref(''),
+      data,
+     /*  search, */
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-
   },
+  data(){
+    return{
+      search: ''
+    }
+  },
+  watch:{
+    search(newValue){
+      this.setQuery(newValue)
+    }
+  },
+  methods:{
+    setQuery(newValue){
+      this.data.setSearchQuery(newValue)
+    }
+    
+  }
 }
 </script>
