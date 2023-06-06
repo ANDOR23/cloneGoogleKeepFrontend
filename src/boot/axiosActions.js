@@ -3,11 +3,10 @@ import { api } from "./axios";
 
 let data = {};
 let archivedNotes = {};
-let setedNotes = {};
 export const getAllNotes = async () => {
   await api.get('http://127.0.0.1:8000/api/v1/notes')
     .then((response) => {
-      data.value = response.data.data
+      data.value = response.data
     })
     .catch((error) => {
       console.log(error);
@@ -18,7 +17,7 @@ export const getAllNotes = async () => {
 export const getArchivedNotes = async () => {
   await api.get('http://127.0.0.1:8000/api/v1/notes/archived')
     .then((response) => {
-      archivedNotes.value = response.data.data
+      archivedNotes.value = response.data
     })
     .catch((error) => {
       console.log(error);
@@ -42,7 +41,6 @@ export const setNote = async (title, content, pin, archive) => {
 }
 
 export const updateNote = async (id, title, content, pin, archive) => {
-  console.log(id, title, content, pin, archive)
   data = {
     title: title,
     content: content,
@@ -66,3 +64,26 @@ export const deleteNote = async (id) => {
     console.log(error);
   }
 }
+
+export const archiveNote = async (id) => {
+  try {
+    const response = await api.post(`http://127.0.0.1:8000/api/v1/notes/${id}/archived`)
+    return response
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const changePage = async (archived, page ) => {
+  console.log(page);
+  await api.get(`http://127.0.0.1:8000/api/v1/notes${archived}?page=${page}`)
+    .then((response) => {
+      data.value = response.data
+      console.log('desde actinos', data.value);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  return data
+}
+

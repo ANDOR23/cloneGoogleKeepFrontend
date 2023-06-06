@@ -10,9 +10,9 @@
           <q-avatar square>
             <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png">
           </q-avatar>
-          {{ headerTitle }}
+          keep
         </q-toolbar-title>
-        <q-input bg-color="gray" dark standout bottom-slots v-model="search" placeholder="Buscar" >
+        <q-input bg-color="gray" dark standout bottom-slots v-model="search" @input="handleSearch" placeholder="Buscar" >
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -43,6 +43,8 @@
 import { ref, computed } from 'vue'
 import NewNote from 'src/components/NewNote.vue'
 import { titleHeaderStore } from 'src/stores/titleStore'
+import { notesStore } from 'src/stores/dataStore'
+/* import { useStore } from 'pinia'; */
 
 
 
@@ -50,19 +52,17 @@ export default {
   name: 'MainLayout',
   components: {NewNote},
   setup () {
-    const titleHeader = titleHeaderStore();
 
-    const headerTitle = computed(() => titleHeader.getTitle) 
     const leftDrawerOpen = ref(false)
 
     return {
-      headerTitle,
       search: ref(''),
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+
+  },
 }
 </script>

@@ -1,11 +1,19 @@
 <template>
     <q-card flat bordered class="my-card" @click="openModalNote">
-        <q-card-section>
-            <div class="text-h6">{{ data.title }}</div>
-        </q-card-section>
-        <q-card-section class="q-pt-none">
-            {{ data.content }}
-        </q-card-section>
+        <div v-if="data.tittle || data.content === null">
+            <q-card-section>
+                <div class="text-h6 non-selectable">Nota vacía...</div>
+            </q-card-section>
+        </div>
+        <div v-else>
+            <q-card-section>
+                <div class="text-h6 non-selectable">{{ data.title }}</div>
+            </q-card-section>
+            <q-card-section class="q-pt-none non-selectable">
+                {{ data.content }}
+            </q-card-section>
+        </div>
+
         <ModalNote :show-dialog="showModalNote" :data="data" @update:show-dialog="showModalNote = $event" />
     </q-card>
 </template>
@@ -23,8 +31,8 @@ export default defineComponent({
             required: true
         }
     },
-    data(){
-        return{
+    data() {
+        return {
             showModalNote: false
         }
     },

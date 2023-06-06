@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const titleHeaderStore = defineStore('title',{
   state: () => ({
-    title: 'Keep'
+    title: ''
   }),
   getters: {
     getTitle() {

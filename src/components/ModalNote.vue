@@ -11,13 +11,13 @@
       </q-btn>
       <q-card-section>
         <div class="text-h6">
-          <q-input class="text-h6" borderless v-model="title" />
+          <q-input class="text-h6" placeholder="Título" borderless v-model="title" />
         </div>
         {{ data.pinned }}
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-input borderless v-model="content" />
+        <q-input borderless placeholder="Nota" v-model="content" />
         {{ data.archived }}
       </q-card-section>
 
@@ -46,8 +46,11 @@
     </q-card>
   </q-dialog>
 </template>
+
+
 <script>
 import { updateNote, deleteNote } from "src/boot/axiosActions";
+import { notesStore } from "src/stores/dataStore";
 import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
   name: "ModalNote",
@@ -61,14 +64,13 @@ export default defineComponent({
       required: true,
     },
   },
-  data(props) {
+  data() {
     return {
       showDialogProp: false,
-/*       pin: props.data.pin,
-      archive: props.data.archive, */
     };
   },
   setup(props) {
+    const data = notesStore();
     const id = ref("");
     const title = ref("");
     const content = ref("");
@@ -77,8 +79,8 @@ export default defineComponent({
 
     onMounted(() => {
       id.value = props.data.id;
-      title.value = props.data.title;
-      content.value = props.data.content;
+      title.value = props.data.title //=== null ? 'Título' : props.data.title;
+      content.value = props.data.content // === null ? 'Nota' : props.data.content;
       pin.value = props.data.pinned;
       archive.value = props.data.archived
     });
@@ -87,47 +89,49 @@ export default defineComponent({
       title,
       content,
       pin,
-      archive
+      archive,
+      data
     };
   },
   watch: {
     showDialog(newValue) {
       this.showDialogProp = newValue;
       console.log("showDialog");
+      
     },
     showDialogProp(newValue) {
       this.$emit("update:showDialog", newValue);
-      // this.updateNote()
       console.log("showDialogProp");
+      
     },
   },
   methods: {
     setPin() {
       this.pin = this.pin === 0 ? 1 : 0;
       console.log(this.pin);
+      updateNote(this.id, this.title, this.content, this.pin, this.archive)
     },
     setArchive() {
+      this.showDialogProp = false
       this.archive = this.archive === 0 ? 1 : 0;
-      console.log(this.archive);
+      this.updateNote(this.id, this.title, this.content, this.pin, this.archive)
     },
     async updateNote() {
       try {
-        const response = await updateNote(
-          this.id,
-          this.title,
-          this.content,
-          this.pin,
-          this.archive
-        );
-        console.log(response);
+        const response = await this.data.updateNote(this.id, this.title, this.content, this.pin, this.archive)
+        const dataStore = notesStore();
+        this.archive === 1 ? dataStore.setData(response.data) : dataStore.setArchivedNotes(response.data)
+        //console.log(response.data);
       } catch (error) {
         console.log(error);
       }
     },
     async deleteNote() {
+      this.showDialogProp = false
       try {
         const response = await deleteNote(this.id);
-        console.log(response);
+        const dataStore = notesStore();
+        this.archive === 0 ? dataStore.setData(response.data) : dataStore.setArchivedNotes(response.data)
       } catch (error) {
         console.log(error);
       }

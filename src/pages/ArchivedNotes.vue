@@ -1,28 +1,51 @@
 <template>
     <q-page class="flex column">
-        <div class="flex wrap´row justify-evenly q-pa-md q-border-dark">
-            <NoteCard v-for="item in data" :key="item.id" :data="item" />
+        <div class="flex wrap row justify-evenly q-pa-md q-border-dark">
+            <NoteCard v-for="item in notes.data" :key="item?.id" :data="item" />
+        </div>
+        <div class="q-pa-lg flex flex-center">
+            <q-pagination v-model="currentPage" :max="totalPages - 2" @click="changePage" input />
         </div>
     </q-page>
 </template>
 
 <script>
-import { getArchivedNotes } from 'src/boot/axiosActions';
 import NoteCard from 'src/components/NoteCard.vue';
-import { defineComponent, onMounted, ref } from 'vue';
+import { titleHeaderStore } from 'src/stores/titleStore';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { notesStore } from 'src/stores/dataStore';
 
 export default defineComponent({
     name: 'ArchivedNotes',
-    components: {NoteCard},
+    components: { NoteCard },
     setup() {
-        let data = ref([]);
-        onMounted(async () => {
-            await getArchivedNotes().then((response) => {
-                data.value = response.value
-            })
+        const data = notesStore();
+        const currentPage = ref(1)
+        const totalPages = computed(() => {
+            return data.totalpages
         })
-        return { 
-            data 
+        const notes = computed(() => {
+            return data.archivedNotes
+        })
+        onMounted(async () => {
+            data.setArchivedNotes()
+        })
+        watch(
+            () => data.notes,
+            (newNotes) => {
+                notes.value = newNotes;
+            }
+        );
+        return {
+            totalPages,
+            notes,
+            currentPage,
+            data
+        }
+    },
+    methods: {
+        changePage() {
+            this.data.changeArchivedPage('/archived', this.currentPage)
         }
     }
 })
