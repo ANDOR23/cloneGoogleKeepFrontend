@@ -17,9 +17,17 @@ $secondary : #26A69A;
 $accent    : #9C27B0;
 
 $dark      : #1D1D1D;
-$dark-page : #121212;
+$dark-page : #202124;
 
 $positive  : #21BA45;
 $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
+
+$dark-primary: #FFFFFF;     // Color primario en modo oscuro
+$dark-background: #202124;  // Color de fondo en modo oscuro
+$dark-text: #FFFFFF;        // Color de texto en modo oscuro
+
+$light-primary: #202124;    // Color primario en modo claro
+$light-background: #FFFFFF; // Color de fondo en modo claro
+$light-text: #000000;  

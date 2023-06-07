@@ -11,15 +11,16 @@
 
 <script>
 import NoteCard from 'src/components/NoteCard.vue';
-import { titleHeaderStore } from 'src/stores/titleStore';
 import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { notesStore } from 'src/stores/dataStore';
+import { titleHeaderStore } from 'src/stores/titleStore'
 
 export default defineComponent({
     name: 'ArchivedNotes',
     components: { NoteCard },
     setup() {
         const data = notesStore();
+    
         const currentPage = ref(1)
         const totalPages = computed(() => {
             return data.totalpages

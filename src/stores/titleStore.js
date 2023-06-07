@@ -2,16 +2,11 @@ import { defineStore } from 'pinia';
 
 export const titleHeaderStore = defineStore('title',{
   state: () => ({
-    title: ''
+    title: 'sss'
   }),
-  getters: {
-    getTitle() {
-      return this.title
-    }
-  },
   actions: {
-    setTitle(title){
-      this.title = title
+    setTitle(titleHeader){
+      this.title = titleHeader
     }
   }
 })

@@ -1,11 +1,17 @@
-<template>
-  <div>
-    <q-input v-show="clicked" outlined placeholder="Crear una nota..." @click="showForm" />
-    <div v-show="!clicked" class="no-border">
-      <q-input borderless v-model="title" class="no-outline" placeholder="Título" />
-      <q-btn flat round><q-icon name="o_push_pin" v-model="pin" @click="setPin" /></q-btn>
+<template >
+  <div class="input-container"  >
+    <q-input  v-show="clicked" outlined placeholder="Crear una nota..." @click="showForm" />
+    <div v-show="!clicked" class="inputForm-style">
+      <div class="inputTitle">
+        <q-input borderless v-model="title" class="inputNew" placeholder="Título" />
+      <q-btn flat round >
+        <q-icon v-if="pin === 0" name="o_push_pin" v-model="pin" @click="setPin" />
+        <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
+      </q-btn>
+      </div>
+      
       <q-input borderless v-model="content" placeholder="Crear una nota..." />
-      <div>
+      <div class="actionsCard">
         <q-btn flat round><q-icon name="o_color_lens" /></q-btn>
         <q-btn flat round><q-icon name="o_archive" @click="archiveNote" v-model="archive" /></q-btn>
         <q-btn flat @click="setNote">Cerrar</q-btn>
@@ -86,6 +92,15 @@ export default {
       }
 
     }
+  },
+  computed: {
+    headerClasses() {
+      return {
+        'dark-mode': this.$q.dark.isActive,
+        'light-mode': !this.$q.dark.isActive
+      };
+    }
+
   }
 }
 

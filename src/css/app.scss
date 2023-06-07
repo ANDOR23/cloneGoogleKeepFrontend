@@ -1,1 +1,175 @@
 // app global css in SCSS form
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+body {
+  font-family: 'Poppins', sans-serif;
+}
+.q-dark {
+  /* Estilos para el modo oscuro */
+  background-color: #202124;
+  color: $dark-text;
+}
+
+.q-light {
+  /* Estilos para el modo claro */
+  background-color: $light-background;
+  color: $light-text;
+}
+.dark-mode {
+  /* Estilos para el encabezado en modo oscuro */
+  background-color: #202124;
+  color: #FFFFFF;
+}
+.light-mode {
+  /* Estilos para el encabezado en modo claro */
+  background-color: #FFFFFF;
+  color: #202124;
+}
+.header-style{
+  width: 100%;
+  display: flex;
+  height: 64px;
+}
+.input-search{
+  margin-top: 20px;
+}
+.card-style{
+  width: 240px;
+  height: 120px;
+  padding: 3px;
+}
+.titlexpin{
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.card-container{
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.card{
+  margin: 15px;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+}
+.input-container{
+  position: relative;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px  ;
+}
+.inputForm-style{
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  width: 600px;
+  position: relative;
+  padding-left: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+.inputcloseSearch-style{
+  display: flex;
+  justify-content: center;
+  
+  
+}
+.q-field__control{
+  display: flex;
+  align-items: center;
+  width: 600px;
+  height: 46px;
+}
+.q-toolbar__title{
+  width: 100px;
+}
+.title-style{
+  width: 100px;
+  margin-right:250px;
+}
+.pin-btn{
+  height: 10px;
+}
+.text{
+  margin-bottom: -18px;
+  cursor: default;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.textTitle{
+  margin-bottom: -18px;
+  cursor: default;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.inputTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.inputNew{
+  width: 480px;
+  margin-right: 50px;
+}
+.modal-style{
+  height: 210px
+}
+.actions-btn{
+  position: absolute;
+  bottom: 0;
+  margin-left: 100px;
+}
+.actionsModal{
+  display: flex;
+  justify-content: flex-end;
+}
+.closeModalbtn-style{
+  border: solid;
+  display: flex;
+  justify-content: flex-start;
+}
+.pinModal-style{
+  
+}
+.inputtitleModalContainer{
+  width: 400px
+}
+.inputtitleModal{
+  width: 100%;
+  word-break:normal!important;
+}
+.inputcontentModal{
+  width: 100%;
+  word-break:normal!important;
+}
+.inputcontentModalContainer{
+  width: 400px
+}
+.topThings{
+  display: flex;
+  align-items: center;
+}
+.notFound{
+  align-items: center;
+  text-align: center;
+}
+.pagination{
+  bottom: 0;
+  position: relative;
+}

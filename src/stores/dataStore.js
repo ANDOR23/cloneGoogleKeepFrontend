@@ -8,12 +8,22 @@ export const notesStore = defineStore('notesStore', {
     totalpages: 0,
     searchQuery: '',
     originalNotes: [],
-    mergedNotes: []
+    mergedNotes: [],
+    pinnedNotes:[]
   }),
-  getters: {
-    getData(state) {
-      return state.notes
+  getters:{
+    getSearch(state){
+      return state.searchQuery
     },
+    getData(state){
+      return state.mergedNotes
+    },
+    getPinnedCards(state){
+      return state.pinnedNotes.filter(note => note.data.pinned === 1)
+    },
+    getNotPinnedCards(state){
+      return state.notes.filter(note => note.data.pinned === 0)
+    }
   },
   actions: {
     setSearchQuery(query) {
@@ -44,6 +54,8 @@ export const notesStore = defineStore('notesStore', {
         const response = await getAllNotes();
         this.notes = response.value
         this.originalNotes = response.value
+        this.mergedNotes = [...this.notes.data, ...this.archivedNotes.data]
+        console.log(this.mergedNotes);
         this.totalpages = response.value.links.length
       } catch (error) {
         console.log(error);
@@ -54,7 +66,8 @@ export const notesStore = defineStore('notesStore', {
         const response = await getArchivedNotes();
         this.archivedNotes = response.value
         this.totalpages = response.value.links.length
-        this.mergedNotes = [...this.notes.data, ...this.archivedNotes.data]
+        //this.mergedNotes = [...this.notes, ...this.archivedNotes]
+        
       } catch (error) {
         console.log(error);
       }

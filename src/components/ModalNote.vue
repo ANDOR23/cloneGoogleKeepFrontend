@@ -1,27 +1,29 @@
 <template>
   <q-dialog v-model="showDialogProp">
-    <q-card>
-
-      <q-btn flat round>
-
-        <q-icon v-if="pin === 0" name="o_push_pin" v-model="pin" @click="setPin" />
-        <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
+    <q-card class="modal-style">
+      <q-card-section class="topThings">
 
 
-      </q-btn>
-      <q-card-section>
-        <div class="text-h6">
-          <q-input class="text-h6" placeholder="Título" borderless v-model="title" />
+        <div class="text-h6 inputtitleModalContainer ">
+          <q-input class=" text-h6 inputtitleModal" placeholder="Título" borderless v-model="title" />
         </div>
+        <div>
+          <q-btn flat round class="pinModal-style">
+            <q-icon v-if="pin === 0" name="o_push_pin" v-model="pin" @click="setPin" />
+            <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
+          </q-btn>
+        </div>
+
+
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
-        <q-input borderless placeholder="Nota" v-model="content" />
+      <q-card-section class="inputcontentModalContainer">
+        <q-input class="inputcontentModal" borderless placeholder="Nota" v-model="content" />
 
       </q-card-section>
 
       <div>
-        <q-card-actions>
+        <q-card-actions class="actionsModal">
           <q-btn flat>
             <q-icon name="o_color_lens" />
           </q-btn>
@@ -37,8 +39,6 @@
               </q-item-section>
             </q-item>
           </q-btn-dropdown>
-        </q-card-actions>
-        <q-card-actions>
           <q-btn flat label="Cerrar" @click="updateNote" v-close-popup />
         </q-card-actions>
       </div>
@@ -48,7 +48,7 @@
 
 
 <script>
-import { updateNote, deleteNote } from "src/boot/axiosActions";
+import { deleteNote } from "src/boot/axiosActions";
 import { notesStore } from "src/stores/dataStore";
 import { defineComponent, onMounted, ref } from "vue";
 export default defineComponent({
@@ -78,8 +78,8 @@ export default defineComponent({
 
     onMounted(() => {
       id.value = props.data.id;
-      title.value = props.data.title //=== null ? 'Título' : props.data.title;
-      content.value = props.data.content // === null ? 'Nota' : props.data.content;
+      title.value = props.data.title
+      content.value = props.data.content
       pin.value = props.data.pinned;
       archive.value = props.data.archived
     });
@@ -108,7 +108,7 @@ export default defineComponent({
     unarchiveNote() {
       this.showDialogProp = false
       this.archive = 0
-      console.log('aqui');
+      console.log('aquienmodal');
       this.updateNoteForUnarchive(this.id, this.title, this.content, this.pin, this.archive)
     },
     setPin() {

@@ -1,38 +1,76 @@
 
 <template>
   <q-layout view="hHh LpR fFf">
-
-    <q-header bordered class="bg-primary text-white">
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title>
-          <q-avatar square>
-            <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png">
-          </q-avatar>
-          keep
-        </q-toolbar-title>
-        <q-input bg-color="gray" dark standout bottom-slots v-model="search" placeholder="Buscar" >
+    
+    <q-header bordered :class="headerClasses" >
+      <div class="header-style">
+        <q-toolbar>
+          <q-btn dense flat round icon="menu" @click="miniState = !miniState" />
+          <div class="title-style">
+            <q-toolbar-title >
+            <q-avatar square>
+              <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png">
+            </q-avatar>
+            Keep
+          </q-toolbar-title>
+          </div>
+          
+      
+      <q-input standout bottom-slots v-model="search" placeholder="Buscar" class="input-search">
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
         <template v-slot:append>
-          <q-icon v-if="search" name="close" @click="search = ''" class="cursor-pointer" round />
+          <q-icon class="inputcloseSearch-style" v-if="search" standout name="close" @click="search = ''"  />
         </template>
       </q-input>
+      <q-toggle v-model="darkMode" color="blue-9" label="Modo oscuro" />
       </q-toolbar>
-      
+ </div>
     </q-header>
+ 
+    <q-drawer show-if-above :width="300" v-model="drawer" side="left" :mini="miniState" @mouseout="miniState = true"
+      @mouseover="miniState = false" class="drawer-style">
+      <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+        <q-list padding>
+          <router-link to="/">
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon :class="headerClasses" name="o_lightbulb" />
+              </q-item-section>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left">
-      <div>
-        <router-link to="/">Notas</router-link><br>
-        <router-link to="/archived">Archivadas</router-link><br>
-        <router-link to="/trash">Papelera</router-link>
-      </div>
+              <q-item-section :class="headerClasses" class="text-weight-medium">
+                Notas
+              </q-item-section>
+            </q-item>
+          </router-link>
+          <router-link to="/archived">
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon :class="headerClasses" name="o_archive" />
+              </q-item-section>
+
+              <q-item-section :class="headerClasses" class="text-weight-medium">
+                Archivadas
+              </q-item-section>
+            </q-item>
+          </router-link>
+          <router-link to="/trash">
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon :class="headerClasses" name="o_delete" />
+              </q-item-section>
+
+              <q-item-section :class="headerClasses" class="text-weight-medium">
+                Papelera
+              </q-item-section>
+            </q-item>
+          </router-link>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="container">
       <router-view />
     </q-page-container>
 
@@ -50,37 +88,48 @@ import { notesStore } from 'src/stores/dataStore'
 
 export default {
   name: 'MainLayout',
-  components: {NewNote},
-  setup () {
+  components: { NewNote },
+  setup() {
     const data = notesStore();
 
-    // const search = ref('')
-    const leftDrawerOpen = ref(false)
 
     return {
       data,
-     /*  search, */
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      drawer: ref(false),
+      miniState: ref(true),
+
     }
   },
-  data(){
-    return{
-      search: ''
+  data() {
+    return {
+      search: '',
+      darkMode: false
     }
   },
-  watch:{
-    search(newValue){
+  watch: {
+    search(newValue) {
       this.setQuery(newValue)
+    },
+    darkMode(newValue) {
+      this.$q.dark.set(newValue);
     }
   },
-  methods:{
-    setQuery(newValue){
+  methods: {
+    setQuery(newValue) {
       this.data.setSearchQuery(newValue)
     }
-    
+
+  },
+  computed: {
+    headerClasses() {
+      return {
+        'dark-mode': this.$q.dark.isActive,
+        'light-mode': !this.$q.dark.isActive
+      };
+    }
+
   }
+
 }
 </script>
+
