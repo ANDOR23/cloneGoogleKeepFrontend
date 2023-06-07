@@ -36,6 +36,8 @@ body {
   width: 240px;
   height: 120px;
   padding: 3px;
+  margin: 0 20px 20px 0;
+ 
 }
 .titlexpin{
   height: 40px;
@@ -52,6 +54,16 @@ body {
   padding-left: 100px;
   padding-right: 100px;
   padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.pinned-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.notPinned-container{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -144,9 +156,6 @@ body {
   display: flex;
   justify-content: flex-start;
 }
-.pinModal-style{
-  
-}
 .inputtitleModalContainer{
   width: 400px
 }
@@ -172,4 +181,7 @@ body {
 .pagination{
   bottom: 0;
   position: relative;
+}
+.section{
+  width: 850px;
 }

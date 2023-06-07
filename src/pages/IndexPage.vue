@@ -1,27 +1,30 @@
 <template class="container">
   <q-page>
-    <NewNote class="newNotes-style" v-if="data.getSearch.length == 0" />
+    <NewNote class="newNotes-style" v-if="data.getSearch?.length == 0" />
     <div class="notFound text-h6" v-if="notes.data?.length === 0">
 
       <p class="notFound">No hay resultados que coincidan.</p>
     </div>
-    <div class="card-container" v-else>
-      <div>
-        <p class="text-h9">FIJADAS</p><br>
-        
-          <NoteCard v-for="note in pinnedNotes" :key="note.id" :data="note" />
-        
+    <div class="card-container" v-else-if="pinnedNotes?.length !== 0">
+      <div class="pinned-container">
+        <p class="text-h9 section">FIJADAS</p>
+
+        <NoteCard v-for="note in pinnedNotes" :key="note.id" :data="note" />
+
       </div>
-      <div>
-        <p class="text-h9">otras</p><br>
-        
-          <NoteCard v-for="note in notPinnedNotes" :key="note.id" :data="note" />
-        
+      <div class="notPinned-container">
+        <p class="text-h9 section">OTRAS</p>
+
+        <NoteCard v-for="note in notPinnedNotes" :key="note.id" :data="note" />
+
       </div>
 
 
       <!-- <NoteCard class="card" v-for="item in notes.data" :key="item?.id" :data="item" /> -->
-      
+
+    </div>
+    <div class="card-container" v-else>
+      <NoteCard class="card" v-for="item in notes.data" :key="item?.id" :data="item" />
     </div>
   </q-page>
   <div>
