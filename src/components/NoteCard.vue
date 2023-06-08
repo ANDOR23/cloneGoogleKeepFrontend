@@ -1,6 +1,6 @@
 <template>
-    <q-card style="background-color: $pink-light;" flat bordered class="card-style" @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false">
+    <q-card flat bordered :class="`card-style ${bgColor}`" @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"><!--   -->
         <div v-if="data.title === null && data.content === null">
             <q-card-section @click="openModalNote">
                 <div class="text-h6 non-selectable">Nota vacía</div>
@@ -27,15 +27,27 @@
                 {{ data?.content }}
             </q-card-section>
         </div>
-        <div class="actionsCard">
-            <q-card-actions align="right" v-if="isHovered">
+        <div class="actionsCard" v-if="isHovered">
+            <q-card-actions align="right">
 
-                <q-btn flat round size="10px">
+                <q-btn flat round size="10px" @click="toggleDropdownColor">
                     <q-tooltip anchor="bottom middle" self="center middle">
                         Opciones de color
                     </q-tooltip>
                     <q-icon name="o_color_lens" />
                 </q-btn>
+                <q-card v-if="showDropdownColors" class="dropdownColors-Container">
+                    <div @mouseleave="toggleDropdownColor" class="Colors-Container">
+                        <q-btn :class="headerClasses" class="color-btn" round size="10px" icon="o_format_color_reset"
+                            @click="changeColor('none')" />
+                        <q-btn round size="10px" style="background-color: #b0c2f2;" @click="changeColor('lila')" />
+                        <q-btn round size="10px" style="background-color: #fdcae1;" @click="changeColor('lightPink')" />
+                        <q-btn round size="10px" style="background-color: #b8e4ff;" @click="changeColor('bluesky')" />
+                        <q-btn round size="10px" style="background-color: #eaffc2;" @click="changeColor('lime')" />
+                        <q-btn round size="10px" style="background-color: #e79eff;" @click="changeColor('lightViolet')" />
+                    </div>
+
+                </q-card>
                 <q-btn flat round size="10px">
                     <q-tooltip v-if="data.archived === 0" anchor="bottom middle" self="center middle">
                         Archivar
@@ -46,19 +58,15 @@
                     <q-icon v-if="data.archived === 0" name="o_archive" @click="archiveNote" v-model="archive" />
                     <q-icon v-else name="o_unarchive" @click="unarchiveNote" v-model="archive" />
                 </q-btn>
-
-                <q-btn-dropdown flat size="10px" no-icon-animation rounded dropdown-icon="more_vert">
-                    <template v-slot:label>
-                        <q-tooltip anchor="bottom middle" self="center middle">
-                            Más
-                        </q-tooltip>
-                    </template>
-                    <q-item v-close-popup @click="deleteNote">
-                        <q-item-section>
-                            <q-item-label>Borrar nota</q-item-label>
-                        </q-item-section>
-                    </q-item>
-                </q-btn-dropdown>
+                <q-btn flat round size="10px" @click="toggleDropdownMenu">
+                    <q-tooltip anchor="bottom middle" self="center middle">
+                        Más
+                    </q-tooltip>
+                    <q-icon name="more_vert" />
+                </q-btn>
+                <div @mouseleave="toggleDropdownMenu" class="dropdownMenu-container">
+                    <q-btn v-if="showDropdownMenu" class="dropdownBtn" label="Borrar la nota" @click="deleteNote"></q-btn>
+                </div>
             </q-card-actions>
         </div>
         <ModalNote :show-dialog="showModalNote" :data="data" @update:show-dialog="showModalNote = $event" />
@@ -67,7 +75,8 @@
 
 <script>
 import { notesStore } from "src/stores/dataStore"
-import { defineComponent, ref } from "vue"
+import { computed, defineComponent, ref } from "vue"
+
 import ModalNote from "./ModalNote.vue"
 import { deleteNote } from "src/boot/axiosActions"
 
@@ -83,14 +92,38 @@ export default defineComponent({
     data() {
         return {
             showModalNote: false,
-            isHovered: false
+            isHovered: false,
+            showDropdownMenu: false,
+            showDropdownColors: false,
+            //bgColor: this.data.color
         }
     },
-    setup() {
+    setup(props) {
         const noteData = notesStore();
-        return { noteData }
+        const bgColor = ref(props.data.color)
+        return {
+            noteData,
+            bgColor
+            
+        }
+    },
+    computed:{
+        getData(){
+            return this.noteData.getData
+        }
     },
     methods: {
+        changeColor(color) {
+            console.log('entro');
+            this.bgColor = color;
+            this.updateNote()
+        },
+        toggleDropdownColor() {
+            this.showDropdownColors = !this.showDropdownColors
+        },
+        toggleDropdownMenu() {
+            this.showDropdownMenu = !this.showDropdownMenu;
+        },
         openModalNote() {
             this.showModalNote = true;
         },
@@ -101,23 +134,24 @@ export default defineComponent({
             try {
                 const response = await deleteNote(this.data.id);
                 const dataStore = notesStore();
-                this.archive === 0 ? dataStore.setData(response.data) : dataStore.setArchivedNotes(response.data)
+                this.data.archived === 0 ? dataStore.setData(response.data) : dataStore.setArchivedNotes(response.data)
             } catch (error) {
                 console.log(error);
             }
         },
         async archiveNote() {
-
             try {
                 const response = await this.noteData.archiveNote(this.data.id)
                 const dataStore = notesStore();
                 dataStore.setData(response.data)
+                this.archiveNotify()
             } catch (error) {
                 console.log(error);
             }
         },
         setPin() {
             this.data.pinned = this.data.pinned === 0 ? 1 : 0;
+            this.unarchiveNote()
         },
         unarchiveNote() {
             this.data.archived = 0
@@ -133,7 +167,19 @@ export default defineComponent({
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+        async updateNote() {
+            console.log('update');
+            try {
+                const response = await this.noteData.updateNote(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived, this.bgColor)
+                const dataStore = notesStore();
+                dataStore.setData(response.data)
+                this.getData
+                this.archive === 0 ? dataStore.setData(response.data) : dataStore.setArchivedNotes(response.data)
+            } catch (error) {
+                console.log(error);
+            }
+        },
     }
 
 })

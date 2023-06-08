@@ -25,12 +25,13 @@ export const getArchivedNotes = async () => {
   return archivedNotes
 }
 
-export const setNote = async (title, content, pin, archive) => {
+export const setNote = async (title, content, pin, archive, color) => {
   data = {
     title: title,
     content: content,
     pinned: pin,
-    archived: archive
+    archived: archive,
+    color: color
   }
   try {
     const response = await api.post('http://127.0.0.1:8000/api/v1/notes', data)
@@ -40,12 +41,13 @@ export const setNote = async (title, content, pin, archive) => {
   }
 }
 
-export const updateNote = async (id, title, content, pin, archive) => {
+export const updateNote = async (id, title, content, pin, archive, color) => {
   data = {
     title: title,
     content: content,
     pinned: pin,
-    archived: archive
+    archived: archive,
+    color: color
   }
   try {
     const response = await api.put(`http://127.0.0.1:8000/api/v1/notes/${id}`, data)

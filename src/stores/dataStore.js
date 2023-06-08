@@ -55,7 +55,7 @@ export const notesStore = defineStore('notesStore', {
         this.notes = response.value
         this.originalNotes = response.value
         this.mergedNotes = [...this.notes.data, ...this.archivedNotes.data]
-        console.log(this.mergedNotes);
+        console.log('merged',this.mergedNotes);
         this.totalpages = response.value.links.length
       } catch (error) {
         console.log(error);
@@ -88,19 +88,19 @@ export const notesStore = defineStore('notesStore', {
         console.log(error);
       }
     },
-    async setNewNote(title, content, pin, archive) {
+    async setNewNote(title, content, pin, archive, color) {
       try {
-        const response = await setNote(title, content, pin, archive)
+        const response = await setNote(title, content, pin, archive, color)
         console.log(response.data);
         return response.data
       } catch (error) {
         console.log(error);
       }
     },
-    async updateNote(id, title, content, pin, archive) {
-      console.log(id, title, content, pin, archive);
+    async updateNote(id, title, content, pin, archive, color) {
+      console.log(id, title, content, pin, archive, color);
       try {
-        const response = await updateNote(id, title, content, pin, archive)
+        const response = await updateNote(id, title, content, pin, archive, color)
         console.log(response.data)
         return response.data
       } catch (error) {

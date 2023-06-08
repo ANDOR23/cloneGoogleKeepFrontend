@@ -1,12 +1,11 @@
 <template >
   <q-page>
     <NewNote class="newNotes-style" v-if="data.getSearch?.length == 0" />
-    <div class="notFound text-h6" v-if="notes.data?.length === 0">
+    <div class="notFound text-h6" v-if="notes.data?.length === 0 && data.getSearch?.length == 0">
       <q-icon name="o_lightbulb" size="120px" />
       <p>Las notas que agregues aparecerán aquí</p>
     </div>
-    <div class="notFound text-h6" v-if="notes.data?.length === 0">
-
+    <div class="notFound text-h6" v-if="notes.data?.length === 0 && data.getSearch?.length !== 0 ">
       <p>No hay resultados que coincidan.</p>
     </div>
     <div class="card-container" v-else-if="pinnedNotes?.length !== 0">
@@ -29,7 +28,8 @@
     </div>
   </q-page>
   <div>
-    <q-pagination v-if="data.getSearch?.length == 0" class="pagination" v-model="currentPage" :max="totalPages - 2" @click="changePage" input />
+    <q-pagination v-if="notes.data?.length !== 0" class="pagination" v-model="currentPage"
+      :max="totalPages - 2" @click="changePage" input />
   </div>
 </template>
 
@@ -53,6 +53,7 @@ export default defineComponent({
       return data.notes
     })
     onMounted(() => {
+      
       data.setArchivedNotes();
       data.setData();
     });

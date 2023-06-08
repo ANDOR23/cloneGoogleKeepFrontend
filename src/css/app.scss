@@ -4,23 +4,19 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 .q-dark {
-  /* Estilos para el modo oscuro */
   background-color: #202124;
   color: $dark-text;
 }
 
 .q-light {
-  /* Estilos para el modo claro */
   background-color: $light-background;
   color: $light-text;
 }
 .dark-mode {
-  /* Estilos para el encabezado en modo oscuro */
   background-color: #202124;
   color: #FFFFFF;
 }
 .light-mode {
-  /* Estilos para el encabezado en modo claro */
   background-color: #FFFFFF;
   color: #202124;
 }
@@ -37,7 +33,11 @@ body {
   height: 120px;
   padding: 3px;
   margin: 0 20px 20px 0;
-  background-color: none;
+} 
+.actionsCard{
+  position: absolute;
+  bottom:0;
+  right: 0;
 }
 .titlexpin{
   height: 40px;
@@ -80,7 +80,7 @@ body {
   max-height: 140px;
   display: flex;
   justify-content: center;
-  margin-top: 40px  ;
+  margin-top: 40px;
 }
 .inputForm-style{
   border: solid 1px gray;
@@ -188,3 +188,83 @@ body {
 .sectionPinOther{
   width: 850px;
 }
+.dropdownMenu-container {
+  position: absolute;
+  bottom: -30px;
+  left: 80px;
+  z-index: 1;
+  width: 150px;
+}
+.dropdownBtn{
+  text-transform: none;
+}
+.dropdownColors-Container{
+  position: absolute;
+  bottom: -30px;
+  left: 0px;
+  z-index: 1;
+  width: 230px;
+  height: 40px;
+  
+}
+.Colors-Container{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  height: 40px;
+  width: 230px;
+  padding: 4px 5px 5px 5px;
+}
+.ModalColors-Container{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  height: 25px;
+  width: 230px;
+  padding: 8px 5px 9px 5px;
+}
+.newNotedropdownColors-Container{
+  position: absolute;
+  bottom: -40px;
+  right: -30px;
+  z-index: 1;
+  width: 230px;
+  height: 40px;
+}
+.ModalDropdownColors-Container{
+  position: absolute;
+  bottom: -40px;
+  right: -30px;
+  z-index: 10000;
+  width: 230px;
+  height: 40px;
+}
+//colores para card
+.none{
+  background-color: none;
+}
+.lightPink {
+  background-color: $lightPink;
+}
+.lila {
+  background-color: $lila;
+}
+.bluesky {
+  background-color: $bluesky;
+}
+.lime {
+  background-color: $lime;
+}
+.lightViolet {
+  background-color: $lightViolet;
+}
+
+
+/* {
+  border: solid 2px #202124;
+} */
+
+/* .floating-button-container{
+    background-color: $dark;
+} */
+
