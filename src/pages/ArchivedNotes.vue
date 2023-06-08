@@ -1,10 +1,14 @@
 <template>
-    <q-page class="flex column">
-        <div class="flex wrap row justify-evenly q-pa-md q-border-dark">
+    <q-page>
+        <div class="notFound text-h6" v-if="notes.data?.length === 0">
+            <q-icon name="o_archive" size="120px" />
+            <p>Tus notas archivadas aparecerán aquí</p>
+        </div>
+        <div class="card-container">
             <NoteCard v-for="item in notes.data" :key="item?.id" :data="item" />
         </div>
-        <div class="q-pa-lg flex flex-center">
-            <q-pagination v-model="currentPage" :max="totalPages - 2" @click="changePage" input />
+        <div v-if="notes.data?.length !== 0">
+            <q-pagination class="pagination" v-model="currentPage" :max="totalPages - 2" @click="changePage" input />
         </div>
     </q-page>
 </template>
@@ -20,7 +24,7 @@ export default defineComponent({
     components: { NoteCard },
     setup() {
         const data = notesStore();
-    
+
         const currentPage = ref(1)
         const totalPages = computed(() => {
             return data.totalpages

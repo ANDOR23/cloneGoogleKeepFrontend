@@ -1,19 +1,30 @@
 <template >
-  <div class="input-container"  >
-    <q-input  v-show="clicked" outlined placeholder="Crear una nota..." @click="showForm" />
-    <div v-show="!clicked" class="inputForm-style">
-      <div class="inputTitle">
-        <q-input borderless v-model="title" class="inputNew" placeholder="Título" />
+  <div class="input-container">
+    <q-input  v-show="!clicked" outlined placeholder="Crear una nota..." @click="showForm" />
+    <div v-show="clicked"  class="inputForm-style">
+      <div class="inputTitleContainer">
+        <q-input borderless v-model="title" class="inputNewTitle" placeholder="Título" />
       <q-btn flat round >
-        <q-icon v-if="pin === 0" name="o_push_pin" v-model="pin" @click="setPin" />
-        <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
+        <q-tooltip anchor="bottom middle" self="center middle">
+              Fijar la nota
+            </q-tooltip>
+        <q-icon name="o_push_pin" v-model="pin" @click="setPin" />
       </q-btn>
       </div>
       
       <q-input borderless v-model="content" placeholder="Crear una nota..." />
-      <div class="actionsCard">
-        <q-btn flat round><q-icon name="o_color_lens" /></q-btn>
-        <q-btn flat round><q-icon name="o_archive" @click="archiveNote" v-model="archive" /></q-btn>
+      <div class="actionsNewNote">
+        <q-btn flat round>
+          <q-tooltip anchor="bottom middle" self="center middle">
+              Opciones de fondo
+            </q-tooltip>
+            <q-icon name="o_color_lens" /></q-btn>
+        <q-btn flat round>
+          <q-tooltip anchor="bottom middle" self="center middle">
+              Archivar
+            </q-tooltip>
+            <q-icon name="o_archive" @click="archiveNote" v-model="archive" />
+          </q-btn>
         <q-btn flat @click="setNote">Cerrar</q-btn>
       </div>
     </div>
@@ -38,11 +49,14 @@ export default {
     }
   },
   setup() {
-    const clicked = ref(true)
+    const clicked = ref(false)
     const data = notesStore()
     return {
       data,
       clicked,
+      closeForm(){
+        clicked.value = false
+      },
       showForm() {
         clicked.value = !clicked.value
       }
@@ -106,4 +120,6 @@ export default {
 
 </script>
 
-<style></style>
+<!-- <style>.hidden {
+  visibility: hidden;
+}</style> -->

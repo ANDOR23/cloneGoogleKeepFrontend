@@ -1,14 +1,20 @@
 <template>
   <q-dialog v-model="showDialogProp">
-    <q-card class="modal-style">
-      <q-card-section class="topThings">
+    <q-card ref="modal-style" class="modal-style">
+      <q-card-section class="inputtitlexpin">
 
 
         <div class="text-h6 inputtitleModalContainer ">
-          <q-input class=" text-h6 inputtitleModal" placeholder="Título" borderless v-model="title" />
+          <q-input class=" text-h6 inputtitleModal" placeholder="Título" borderless v-model="title"/>
         </div>
         <div>
           <q-btn flat round class="pinModal-style">
+            <q-tooltip v-if="pin === 0" anchor="bottom middle" self="center middle">
+              Fijar la nota
+            </q-tooltip>
+            <q-tooltip v-else anchor="bottom middle" self="center middle">
+              Dejar de fijar nota
+            </q-tooltip>
             <q-icon v-if="pin === 0" name="o_push_pin" v-model="pin" @click="setPin" />
             <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
           </q-btn>
@@ -24,15 +30,26 @@
 
       <div>
         <q-card-actions class="actionsModal">
-          <q-btn flat>
+          <q-btn round flat>
+            <q-tooltip anchor="bottom middle" self="center middle">
+              Opciones de fondo
+            </q-tooltip>
             <q-icon name="o_color_lens" />
           </q-btn>
-          <q-btn flat>
+          <q-btn round flat>
+            <q-tooltip anchor="bottom middle" self="center middle">
+              Archivar
+            </q-tooltip>
             <q-icon v-if="archive === 0" name="o_archive" @click="archiveNote" v-model="archive" />
             <q-icon v-else name="o_unarchive" @click="unarchiveNote" v-model="archive" />
           </q-btn>
 
           <q-btn-dropdown flat no-icon-animation rounded dropdown-icon="more_vert">
+            <template v-slot:label>
+              <q-tooltip anchor="bottom middle" self="center middle">
+                Más
+              </q-tooltip>
+            </template>
             <q-item clickable v-close-popup @click="deleteNote">
               <q-item-section>
                 <q-item-label>Borrar nota</q-item-label>
@@ -75,8 +92,12 @@ export default defineComponent({
     const content = ref("");
     const pin = ref('');
     const archive = ref('')
+    const prevTitle = ref('')
+    const prevContent = ref('')
 
     onMounted(() => {
+      prevTitle.value = props.data.title
+      prevContent.value = props.data.content
       id.value = props.data.id;
       title.value = props.data.title
       content.value = props.data.content
@@ -89,14 +110,22 @@ export default defineComponent({
       content,
       pin,
       archive,
-      data
+      data,
+      prevTitle,
+      prevContent
     };
   },
   watch: {
     showDialog(newValue) {
       this.showDialogProp = newValue;
-      console.log("showDialog");
+      console.log("newValue");
 
+      console.log(this.title);
+      console.log(this.prevTitle);
+      if(this.title !== this.prevTitle || this.content !== this.prevContent ){
+        this.updateNote()
+      }
+      //
     },
     showDialogProp(newValue) {
       this.$emit("update:showDialog", newValue);

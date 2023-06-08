@@ -51,7 +51,7 @@
               </q-item-section>
 
               <q-item-section :class="headerClasses" class="text-weight-medium">
-                Archivadas
+                Archivar
               </q-item-section>
             </q-item>
           </router-link>

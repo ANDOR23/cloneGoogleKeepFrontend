@@ -66,8 +66,6 @@ export const notesStore = defineStore('notesStore', {
         const response = await getArchivedNotes();
         this.archivedNotes = response.value
         this.totalpages = response.value.links.length
-        //this.mergedNotes = [...this.notes, ...this.archivedNotes]
-        
       } catch (error) {
         console.log(error);
       }
