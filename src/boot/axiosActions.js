@@ -1,7 +1,10 @@
+/* EN ESTE ARCHIVO SE REALIZAN LAS PETICIONES HTTP AL BACKEND. CADA FUNCIÓN ES EXPORTADA PARA
+  SER IMPORTADAS EN EL DATASTORE */
 import { api } from "./axios";
 
 let data = {};
 let archivedNotes = {};
+/* PETICIÓN GET DE TODOS LOS REGISTROS  */
 export const getAllNotes = async () => {
   await api.get('http://127.0.0.1:8000/api/v1/notes')
     .then((response) => {
@@ -12,6 +15,7 @@ export const getAllNotes = async () => {
     })
   return data
 }
+/* PETICIÓN GET DE TODOS LOS REGISTOS ARCHIVADOS */
 export const getArchivedNotes = async () => {
   await api.get('http://127.0.0.1:8000/api/v1/notes/archived')
     .then((response) => {
@@ -22,7 +26,7 @@ export const getArchivedNotes = async () => {
     })
   return archivedNotes
 }
-
+/* PETICIÓN POST PARA ALMACENAR UN REGISTRO EN LA BASE DE DATOS */
 export const setNote = async (title, content, pin, archive, color) => {
   data = {
     title: title,
@@ -38,7 +42,7 @@ export const setNote = async (title, content, pin, archive, color) => {
     console.log(error);
   }
 }
-
+/* PETICIÓN PUT PARA ACTUALIZAR UN REGISTRO DE LA BASE DE DATOS */
 export const updateNote = async (id, title, content, pin, archive, color) => {
   data = {
     title: title,
@@ -54,7 +58,7 @@ export const updateNote = async (id, title, content, pin, archive, color) => {
     console.log(error);
   }
 }
-
+/* PETICIÓN DELETE PARA ELIMINAR EL ARCHIVO */
 export const deleteNote = async (id) => {
   console.log(id)
   try {

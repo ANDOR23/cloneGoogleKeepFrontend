@@ -1,8 +1,10 @@
 
 <template>
-  <q-layout view="hHh LpR fFf">
+  <q-layout view="hHh LpR fFf"><!-- FORMATO DEL LAYOUT -->
     <q-header bordered :class="headerClasses">
       <div>
+        <!-- TOOLBAR O HEADER DE LA APLICACIÓN QUE CONTIENE COMPONENTES COMO 
+            TOGGLE, AVATAR, Y EL TITULO QUE SE OBTIENE MEDIANTE EL TITLESTORE  -->
         <q-toolbar class="header-style">
           <div class="title-style">
             <q-btn dense flat round icon="menu" @click="miniState = !miniState" />
@@ -14,7 +16,8 @@
               {{ title.getTitle }}
             </q-toolbar-title>
           </div>
-
+          <!-- BARRA DE BUSCADOR PARA ENCONTRAR NOTAS QUE COINCIDAN CON LO QUE SE INGRESÓ
+              EN EL INPUT -->
           <q-input standout bottom-slots v-model="search" placeholder="Buscar" class="input-search">
             <template v-slot:prepend>
               <q-icon name="search" />
@@ -23,12 +26,12 @@
               <q-icon class="inputcloseSearch-style" v-if="search" standout name="close" @click="search = ''" />
             </template>
           </q-input>
-          
+          <!-- TOGGLE QUE INDICA SI LA APLICACIÓN ESTA EN DARK O LIGHT MODE -->
           <q-toggle v-model="darkMode" color="blue-9" label="Modo oscuro" />
         </q-toolbar>
       </div>
     </q-header>
-
+    <!-- DRAWER O BARRA LATERAL, CONTIENE LAS OPCIONES DE NAVEGACIÓN DE LA APLICACIÓN -->
     <q-drawer show-if-above :width="300" v-model="drawer" side="left" :mini="miniState" @mouseout="miniState = true"
       @mouseover="miniState = false" class="drawer-style">
       <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
@@ -75,6 +78,7 @@ import { notesStore } from 'src/stores/dataStore'
 export default {
   name: 'MainLayout',
   components: { NewNote },
+  /* CONFIGURACIÓN DE VARIABLES REACTIVAS */
   setup() {
     const data = notesStore();
     const title = titleHeaderStore();
@@ -85,12 +89,14 @@ export default {
       miniState: ref(true),
     }
   },
+  /* SE CONFIGURA LA DATA */
   data() {
     return {
       search: '',
       darkMode: false
     }
   },
+  /* SE OBSERVAN LOS CAMBIOS QUE LLEGUEN A TENER LOS DATOS */
   watch: {
     search(newValue) {
       this.setQuery(newValue)
@@ -98,8 +104,8 @@ export default {
     darkMode(newValue) {
       this.$q.dark.set(newValue);
     },
-    
   },
+  /* FUNCIONES QUE ENVÍAN DATA A AMBOS STORES */
   methods: {
     setQuery(newValue) {
       this.data.setSearchQuery(newValue)

@@ -1,11 +1,14 @@
 <template>
     <q-card flat bordered :class="`card-style ${bgColor}`" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
         <div v-if="data.title === null && data.content === null">
+            <!-- ESTE TEXTO SE MUESTRA CUANDO SE LE HA ELIMINADO LA INFORMACIÓN AL CARD -->
             <q-card-section @click="openModalNote">
                 <div class="text-h6 non-selectable">Nota vacía</div>
             </q-card-section>
         </div>
-
+        <!-- EN CASO DE QUE HAYA INFORMACIÓN SE MUESTRA EL TÍTULO Y EL CONTENIDO DE LA MISMA 
+            ADEMAS, AL COLOCAR EL CURSOR POR ENCIMA DEL CARD SE MUESTRAN ACCIONES QUE SE PUEDEN
+            REALIZAR (ARCHIVAR, FIJAR, CAMBIAR COLOR DE FONDO)-->
         <div v-else>
             <div class="titlexpin">
                 <q-card-section class="textTitle text-h6" @click="openModalNote">
@@ -95,6 +98,8 @@ export default defineComponent({
     },
     data() {
         return {
+            /* SE CONFIGURAN VARIABLES QUE CONTROLAN EL COMPORTAMIENTO DEL CARD (MOSTRAN EL MODAL
+            MOSTRAR UN DROPDOWN, SI EL CURSOR ESTA ENCIMA, Y EL COLOR DEL CARD) */
             showModalNote: false,
             isHovered: false,
             showDropdownMenu: false,
@@ -110,6 +115,7 @@ export default defineComponent({
         }
     },
     methods: {
+        /* LAS PRIMERA FUNCIONES SE ENCARGAN DEL COMPORTAMIENTO QUE OCURRE EN CADA CARD */
         changeColor(color) {
             this.bgColor = color;
             this.updateNote()
@@ -126,6 +132,7 @@ export default defineComponent({
         updateModal(value) {
             this.showModalNote = value;
         },
+        /* ESTAS SON PETICINES QUE SE PUEDEN HACER AL INTERACTUAR CON EL CARD */
         async deleteNote() {
             try {
                 const response = await deleteNote(this.data.id);

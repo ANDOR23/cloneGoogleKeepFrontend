@@ -1,24 +1,39 @@
-# CloneGoogleKeep (clonegooglekeep)
+# Clone Google Keep (Frontend)
 
-A Quasar Project
+Este es el frontend para un clone de Google Keep. Un gestor de notas que permite realizar diversas acciones.
 
-## Install the dependencies
+## Requisitos previos
+
+Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
+
+- Node v16: [Instrucciones de instalación](https://nodejs.org/en/blog/release/v16.17.0)
+
+## Descarga
+
+Clona el repositorio del proyecto en tu máquina local:
+
+```bash
+git clone <url-del-repositorio>
+```
+## Configuración
+
+1. Accede al directorio del proyecto:
+
+   ```bash
+   cd <nombre-del-proyecto>
+   ```
+
+2. Instala las dependencias
 ```bash
 yarn
 # or
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+3. Inicia la aplicaión en modo desarrollador
 ```bash
-quasar dev
+# si tienes el global CLI:
+$ quasar dev
+# En caso contrario:
+$ yarn quasar dev # or: npx quasar dev
 ```
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).

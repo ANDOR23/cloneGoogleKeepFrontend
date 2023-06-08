@@ -1,7 +1,10 @@
+/* DENTRO DE ESTE STORE ES DONDE SE IMPORTAN TODAS LAS PETICIONES HECHAS EN AXIOSACTIOS.JS */
+
 import { defineStore } from 'pinia';
 import { getAllNotes, getArchivedNotes, changePage, setNote, updateNote, deleteNote, archiveNote } from 'src/boot/axiosActions';
 
 export const notesStore = defineStore('notesStore', {
+  /* SE ESTABLECEN LOS ESTADOS Y SUS VALORES INICIALES */
   state: () => ({
     notes: [],
     archivedNotes: [],
@@ -11,6 +14,7 @@ export const notesStore = defineStore('notesStore', {
     mergedNotes: [],
     pinnedNotes:[]
   }),
+  /* SE ESTABLECEN LOS GETTERS */
   getters:{
     getSearch(state){
       return state.searchQuery
@@ -19,7 +23,9 @@ export const notesStore = defineStore('notesStore', {
       return state.mergedNotes
     }
   },
+  /* SE ESTABLECEN LAS ACTIONS, CADA ACTION ES LA INVOCACIÓN A CADA PETICIÓN HTTP, EXCEPTO LA PRIMERA */
   actions: {
+    /* ESTE ACTION SE ENCARGA DE FILTRAR LAS CARDS RESPECTO A LOS CARACTERES INGRESADOS EN EL BUSCADOR */
     setSearchQuery(query) {
       this.searchQuery = query;
       if (!this.searchQuery) {

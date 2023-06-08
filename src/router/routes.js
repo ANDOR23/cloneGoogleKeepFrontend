@@ -1,4 +1,4 @@
-
+/* RUTAS PARA PODER NAVEGAR POR LA APLICACIÓN */
 const routes = [
   {
     path: '/',

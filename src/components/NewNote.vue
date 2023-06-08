@@ -1,7 +1,11 @@
 <template >
   <div class="input-container">
+    <!-- ESTE PRIMER INPUT SOLO DETERMINA SI SE LE HA HECHO CLICK O NO, EN CASO DE QUE SÍ SE 
+    DESPLIEGA UN FORMULARIO -->
     <q-input v-show="!clicked" outlined placeholder="Crear una nota..." @click="showForm" />
     <div v-show="clicked" :class="`inputForm-style ${color}`">
+      <!-- FORMULARIO PARA INGRESAR UN NUEVO REGISTRO Y DEMÁS ACCIONES (FIJAR, ARCHIVAR
+        O MODIFICAR EL COLOR DEL FONDO) -->
       <div class="inputTitleContainer">
         <q-input borderless v-model="title" class="inputNewTitle" placeholder="Título" />
         <q-btn flat round class="pin-btn">
@@ -58,6 +62,7 @@ export default {
 
   name: 'NewNote',
   data() {
+    /* SE ESTABLEN LAS VARIABLES QUE SERÁN ENVIADAS EN LA PETICION */
     return {
       pin: 0,
       title: '',
@@ -65,11 +70,11 @@ export default {
       archive: 0,
       id: 0,
       showDropdownColors: false,
-      color: 'none',
-      delete: 0
+      color: 'none'
     }
   },
   setup() {
+    /* VARIABLES QUE OBSERVAN EL COMPORTAMIENTO DEL FORMULARIO */
     const clicked = ref(false)
     const data = notesStore()
     return {
@@ -84,9 +89,12 @@ export default {
     }
   },
   methods: {
+    /* LAS FUNCIONES CON PETICIONES SE CONECTAN CON EL STORE, POSTERIOR SE REALIZA LA PETICION HTTP */
+    /* ESTA FUNCION REALIZA EL CAMBIO DE COLOR DEL BACKGROUND  */
     changeColor(color) {
       this.color = color;
     },
+    /* VERIFICA SI SE HA ACTIVADO O NO EL DROPDOWN */
     toggleDropdownColor() {
       this.showDropdownColors = !this.showDropdownColors
     },

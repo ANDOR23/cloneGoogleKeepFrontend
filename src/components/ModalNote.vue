@@ -2,12 +2,13 @@
   <q-dialog v-model="showDialogProp">
     <q-card ref="modal-style" :class="`modal-style ${bgColor}`">
       <q-card-section class="inputtitlexpin">
-
+        <!-- ESTE ES EL INPUT DEL TÍTULO QUE COMO VALOR PREDETERMINADO SERÁ EL QUE HAYA RECIBIDO POR LA CARD -->
         <div class="text-h6 inputtitleModalContainer ">
           <q-input class=" text-h6 inputtitleModal" placeholder="Título" borderless v-model="title" />
         </div>
 
         <div>
+          <!-- ESTE BOTON INDICA SI LA NOTA SE QUIERE FIJAR O NO -->
           <q-btn flat round class="pinModal-style">
             <q-tooltip v-if="pin === 0" anchor="bottom middle" self="center middle">
               Fijar la nota
@@ -20,11 +21,11 @@
           </q-btn>
         </div>
       </q-card-section>
-
+      <!-- ESTE ES EL INPUT DEL CONTENIDO QUE COMO VALOR PREDETERMINADO SERÁ EL QUE HAYA RECIBIDO POR LA CARD -->
       <q-card-section class="inputcontentModalContainer">
         <q-input class="inputcontentModal" borderless placeholder="Nota" v-model="content" />
       </q-card-section>
-
+      <!-- CONTENEDOR DE LAS ACTIONES QUE SE PUEDEN REALIZAR (MODIFICAR EL COLOR DEL CARD, ARCHIVARLO O ELIMINARLO) -->
       <div>
         <q-card-actions class="actionsModal">
           <q-btn-dropdown flat no-icon-animation rounded dropdown-icon="o_color_lens">
@@ -133,6 +134,8 @@ export default defineComponent({
     };
   },
   watch: {
+    /* ESTAS FUNCIONES OBSERVAN EL COMPORTAMIENTO DEL MODAL, SI ESTÁ ABIERTO O NO
+    ADEMAS DE REALIZAR UNA ACTUALIZACIÓN DEL REGISTRO CADA QUE SE CIERRA */
     showDialog(newValue) {
       this.showDialogProp = newValue;
       console.log(this.color, this.prevColor)
@@ -147,6 +150,8 @@ export default defineComponent({
     },
   },
   methods: {
+    /* ESTAS FUNCIONAS SE ENCARGAN DEL COMPORTAMIENTO DE LAS ACCIONES DEL MODAL, SI SE HA ACTIVADO ALGUN DROPDOWN O NO
+      O SI SE HA ACTUALIZADO LA INFORMACIÓN */
     changeColor(color) {
       console.log('entro');
       this.bgColor = color;
