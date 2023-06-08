@@ -1,13 +1,14 @@
 <template >
   <div class="input-container">
     <q-input v-show="!clicked" outlined placeholder="Crear una nota..." @click="showForm" />
-    <div v-show="clicked"  :class="`inputForm-style ${color}`" >
-      <div class="inputTitleContainer" >
+    <div v-show="clicked" :class="`inputForm-style ${color}`">
+      <div class="inputTitleContainer">
         <q-input borderless v-model="title" class="inputNewTitle" placeholder="Título" />
         <q-btn flat round class="pin-btn">
           <q-tooltip v-if="pin === 0" anchor="bottom middle" self="center middle">
             Fijar la nota
           </q-tooltip>
+
           <q-tooltip v-else anchor="bottom middle" self="center middle">
             Dejar de fijar nota
           </q-tooltip>
@@ -24,6 +25,7 @@
           </q-tooltip>
           <q-icon name="o_color_lens" />
         </q-btn>
+
         <q-card v-if="showDropdownColors" class="newNotedropdownColors-Container">
           <div class="Colors-Container">
             <q-btn :class="headerClasses" class="color-btn" round size="10px" icon="o_format_color_reset"
@@ -49,8 +51,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { setNote } from 'src/boot/axiosActions';
+import { ref } from 'vue';
 import { notesStore } from 'src/stores/dataStore';
 
 export default {
@@ -64,7 +65,8 @@ export default {
       archive: 0,
       id: 0,
       showDropdownColors: false,
-      color: 'none'
+      color: 'none',
+      delete: 0
     }
   },
   setup() {
@@ -83,7 +85,6 @@ export default {
   },
   methods: {
     changeColor(color) {
-      console.log('entro');
       this.color = color;
     },
     toggleDropdownColor() {
@@ -91,7 +92,7 @@ export default {
     },
     setPin() {
       this.pin = this.pin === 0 ? 1 : 0
-      console.log(this.pin);
+      this.archive = this.pin === 1 ? 0 : 0
     },
     async archiveNote() {
       if (this.title === '' && this.content === '') {
@@ -100,7 +101,7 @@ export default {
         console.log(this.title, this.content);
 
         try {
-          const idResponse = await this.setNote(this.title, this.content, this.pin, this.archive)
+          const idResponse = await this.setNote(this.title, this.content, this.pin, this.archive, this.color)
           this.id = idResponse.id
           this.showForm();
           console.log('jiji', this.id);
@@ -144,7 +145,3 @@ export default {
 }
 
 </script>
-
-<!-- <style>.hidden {
-  visibility: hidden;
-}</style> -->

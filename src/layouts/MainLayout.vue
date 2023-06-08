@@ -1,34 +1,34 @@
 
 <template>
   <q-layout view="hHh LpR fFf">
-    
-    <q-header bordered :class="headerClasses" >
-      <div class="header-style">
-        <q-toolbar>
-          <q-btn dense flat round icon="menu" @click="miniState = !miniState" />
+    <q-header bordered :class="headerClasses">
+      <div>
+        <q-toolbar class="header-style">
           <div class="title-style">
-            <q-toolbar-title >
-            <q-avatar square>
-              <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png">
-            </q-avatar>
-            Keep
-          </q-toolbar-title>
+            <q-btn dense flat round icon="menu" @click="miniState = !miniState" />
+
+            <q-toolbar-title>
+              <q-avatar square>
+                <img src="https://cdn-icons-png.flaticon.com/512/2965/2965358.png">
+              </q-avatar>
+              {{ title.getTitle }}
+            </q-toolbar-title>
           </div>
+
+          <q-input standout bottom-slots v-model="search" placeholder="Buscar" class="input-search">
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-slot:append>
+              <q-icon class="inputcloseSearch-style" v-if="search" standout name="close" @click="search = ''" />
+            </template>
+          </q-input>
           
-      
-      <q-input standout bottom-slots v-model="search" placeholder="Buscar" class="input-search">
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-        <template v-slot:append>
-          <q-icon class="inputcloseSearch-style" v-if="search" standout name="close" @click="search = ''"  />
-        </template>
-      </q-input>
-      <q-toggle v-model="darkMode" color="blue-9" label="Modo oscuro" />
-      </q-toolbar>
- </div>
+          <q-toggle v-model="darkMode" color="blue-9" label="Modo oscuro" />
+        </q-toolbar>
+      </div>
     </q-header>
- 
+
     <q-drawer show-if-above :width="300" v-model="drawer" side="left" :mini="miniState" @mouseout="miniState = true"
       @mouseover="miniState = false" class="drawer-style">
       <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
@@ -39,7 +39,7 @@
                 <q-icon :class="headerClasses" name="o_lightbulb" />
               </q-item-section>
 
-              <q-item-section :class="headerClasses" class="text-weight-medium">
+              <q-item-section :class="headerClasses" class="text-weight-medium" @click="setTitle('Keep')">
                 Notas
               </q-item-section>
             </q-item>
@@ -50,19 +50,8 @@
                 <q-icon :class="headerClasses" name="o_archive" />
               </q-item-section>
 
-              <q-item-section :class="headerClasses" class="text-weight-medium">
+              <q-item-section :class="headerClasses" class="text-weight-medium" @click="setTitle('Archivar')">
                 Archivar
-              </q-item-section>
-            </q-item>
-          </router-link>
-          <router-link to="/trash">
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon :class="headerClasses" name="o_delete" />
-              </q-item-section>
-
-              <q-item-section :class="headerClasses" class="text-weight-medium">
-                Papelera
               </q-item-section>
             </q-item>
           </router-link>
@@ -78,26 +67,22 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import NewNote from 'src/components/NewNote.vue'
 import { titleHeaderStore } from 'src/stores/titleStore'
 import { notesStore } from 'src/stores/dataStore'
-/* import { useStore } from 'pinia'; */
-
-
 
 export default {
   name: 'MainLayout',
   components: { NewNote },
   setup() {
     const data = notesStore();
-
-
+    const title = titleHeaderStore();
     return {
+      title,
       data,
       drawer: ref(false),
       miniState: ref(true),
-
     }
   },
   data() {
@@ -112,13 +97,16 @@ export default {
     },
     darkMode(newValue) {
       this.$q.dark.set(newValue);
-    }
+    },
+    
   },
   methods: {
     setQuery(newValue) {
       this.data.setSearchQuery(newValue)
+    },
+    setTitle(title){
+      this.title.setTitle(title)
     }
-
   },
   computed: {
     headerClasses() {

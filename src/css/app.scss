@@ -24,9 +24,12 @@ body {
   width: 100%;
   display: flex;
   height: 64px;
+  align-items: center;
+  justify-content: space-between;
 }
 .input-search{
   margin-top: 20px;
+  max-width: 600px;
 }
 .card-style{
   width: 240px;
@@ -74,6 +77,8 @@ body {
 .pagination{
   display: flex;
   justify-content: center;
+  bottom: 0;
+  position: relative;
 }
 .input-container{
   min-height: 56;
@@ -98,18 +103,19 @@ body {
   display: flex;
   justify-content: center; 
 }
-.q-field__control{
+ .q-field__control{
   display: flex;
   align-items: center;
   width: 600px;
   height: 46px;
-}
+}/*
 .q-toolbar__title{
   width: 100px;
-}
+} */
 .title-style{
-  width: 100px;
-  margin-right:250px;
+  width: 203px;
+  display: flex;
+  //margin-right:25px;
 }
 .pin-btn{
   height: 10px;
@@ -180,10 +186,6 @@ body {
   margin-top: 100px;
   align-items: center;
   text-align: center;
-}
-.pagination{
-  bottom: 0;
-  position: relative;
 }
 .sectionPinOther{
   width: 850px;

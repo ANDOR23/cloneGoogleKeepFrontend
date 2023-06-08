@@ -17,12 +17,6 @@ export const notesStore = defineStore('notesStore', {
     },
     getData(state){
       return state.mergedNotes
-    },
-    getPinnedCards(state){
-      return state.pinnedNotes.filter(note => note.data.pinned === 1)
-    },
-    getNotPinnedCards(state){
-      return state.notes.filter(note => note.data.pinned === 0)
     }
   },
   actions: {
@@ -41,13 +35,11 @@ export const notesStore = defineStore('notesStore', {
       })
       if (filteredData != null) {
         this.notes.data = filteredData
-        console.log(this.notes);
         return this.notes
       }else{
         this.notes = null
         return this.notes
       }
-
     },
     async setData() {
       try {
@@ -55,7 +47,6 @@ export const notesStore = defineStore('notesStore', {
         this.notes = response.value
         this.originalNotes = response.value
         this.mergedNotes = [...this.notes.data, ...this.archivedNotes.data]
-        console.log('merged',this.mergedNotes);
         this.totalpages = response.value.links.length
       } catch (error) {
         console.log(error);
@@ -74,7 +65,6 @@ export const notesStore = defineStore('notesStore', {
       try {
         const response = await changePage(archived, page);
         this.archivedNotes = response.value
-        console.log('desdechangepage', this.archivedNotes);
       } catch (error) {
         console.log(error);
       }
@@ -83,7 +73,6 @@ export const notesStore = defineStore('notesStore', {
       try {
         const response = await changePage(archived, page);
         this.notes = response.value
-        console.log('desdechangepage', this.notes);
       } catch (error) {
         console.log(error);
       }
@@ -91,17 +80,14 @@ export const notesStore = defineStore('notesStore', {
     async setNewNote(title, content, pin, archive, color) {
       try {
         const response = await setNote(title, content, pin, archive, color)
-        console.log(response.data);
         return response.data
       } catch (error) {
         console.log(error);
       }
     },
     async updateNote(id, title, content, pin, archive, color) {
-      console.log(id, title, content, pin, archive, color);
       try {
         const response = await updateNote(id, title, content, pin, archive, color)
-        console.log(response.data)
         return response.data
       } catch (error) {
         console.log(error);
@@ -110,7 +96,6 @@ export const notesStore = defineStore('notesStore', {
     async archiveNote(id) {
       try {
         const response = await archiveNote(id)
-        console.log(response.data)
         return response.data
       } catch (error) {
         console.log(error);

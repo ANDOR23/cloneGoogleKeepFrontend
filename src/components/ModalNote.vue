@@ -3,10 +3,10 @@
     <q-card ref="modal-style" :class="`modal-style ${bgColor}`">
       <q-card-section class="inputtitlexpin">
 
-
         <div class="text-h6 inputtitleModalContainer ">
           <q-input class=" text-h6 inputtitleModal" placeholder="Título" borderless v-model="title" />
         </div>
+
         <div>
           <q-btn flat round class="pinModal-style">
             <q-tooltip v-if="pin === 0" anchor="bottom middle" self="center middle">
@@ -19,13 +19,10 @@
             <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
           </q-btn>
         </div>
-
-
       </q-card-section>
 
       <q-card-section class="inputcontentModalContainer">
         <q-input class="inputcontentModal" borderless placeholder="Nota" v-model="content" />
-
       </q-card-section>
 
       <div>
@@ -37,17 +34,15 @@
               </q-tooltip>
             </template>
             <q-item clickable v-close-popup class="ModalColors-Container">
-
-                  <q-btn round size="10px" icon="o_format_color_reset" @click="changeColor('none')" />
-                  <q-btn round size="10px" style="background-color: #b0c2f2;" @click="changeColor('lila')" />
-                  <q-btn round size="10px" style="background-color: #fdcae1;" @click="changeColor('lightPink')" />
-                  <q-btn round size="10px" style="background-color: #b8e4ff;" @click="changeColor('bluesky')" />
-                  <q-btn round size="10px" style="background-color: #eaffc2;" @click="changeColor('lime')" />
-                  <q-btn round size="10px" style="background-color: #e79eff;"
-                    @click="changeColor('lightViolet')" />
-              
+              <q-btn round size="10px" icon="o_format_color_reset" @click="changeColor('none')" />
+              <q-btn round size="10px" style="background-color: #b0c2f2;" @click="changeColor('lila')" />
+              <q-btn round size="10px" style="background-color: #fdcae1;" @click="changeColor('lightPink')" />
+              <q-btn round size="10px" style="background-color: #b8e4ff;" @click="changeColor('bluesky')" />
+              <q-btn round size="10px" style="background-color: #eaffc2;" @click="changeColor('lime')" />
+              <q-btn round size="10px" style="background-color: #e79eff;" @click="changeColor('lightViolet')" />
             </q-item>
           </q-btn-dropdown>
+
           <q-btn round flat>
             <q-tooltip anchor="bottom middle" self="center middle">
               Archivar
@@ -68,6 +63,7 @@
               </q-item-section>
             </q-item>
           </q-btn-dropdown>
+
           <q-btn flat label="Cerrar" @click="updateNote" v-close-popup />
         </q-card-actions>
       </div>
@@ -140,15 +136,14 @@ export default defineComponent({
     showDialog(newValue) {
       this.showDialogProp = newValue;
       console.log(this.color, this.prevColor)
-      if (this.title !== this.prevTitle || this.content !== this.prevContent ) {
+      if (this.title !== this.prevTitle || this.content !== this.prevContent) {
         this.updateNote()
-      }else if(this.bgColor !== this.prevColor){
+      } else if (this.bgColor !== this.prevColor) {
         this.updateNote()
       }
     },
     showDialogProp(newValue) {
       this.$emit("update:showDialog", newValue);
-      console.log("showDialogProp");
     },
   },
   methods: {

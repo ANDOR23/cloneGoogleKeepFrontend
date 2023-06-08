@@ -1,4 +1,3 @@
-import axios from "./axios";
 import { api } from "./axios";
 
 let data = {};
@@ -13,7 +12,6 @@ export const getAllNotes = async () => {
     })
   return data
 }
-
 export const getArchivedNotes = async () => {
   await api.get('http://127.0.0.1:8000/api/v1/notes/archived')
     .then((response) => {
@@ -81,7 +79,6 @@ export const changePage = async (archived, page ) => {
   await api.get(`http://127.0.0.1:8000/api/v1/notes${archived}?page=${page}`)
     .then((response) => {
       data.value = response.data
-      console.log('desde actinos', data.value);
     })
     .catch((error) => {
       console.log(error);

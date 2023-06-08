@@ -1,11 +1,11 @@
 <template>
-    <q-card flat bordered :class="`card-style ${bgColor}`" @mouseenter="isHovered = true"
-        @mouseleave="isHovered = false"><!--   -->
+    <q-card flat bordered :class="`card-style ${bgColor}`" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
         <div v-if="data.title === null && data.content === null">
             <q-card-section @click="openModalNote">
                 <div class="text-h6 non-selectable">Nota vacía</div>
             </q-card-section>
         </div>
+
         <div v-else>
             <div class="titlexpin">
                 <q-card-section class="textTitle text-h6" @click="openModalNote">
@@ -22,11 +22,11 @@
                     <q-icon v-else name="push_pin" v-model="pin" @click="setPin" />
                 </q-btn>
             </div>
-
             <q-card-section class="text" @click="openModalNote">
                 {{ data?.content }}
             </q-card-section>
         </div>
+
         <div class="actionsCard" v-if="isHovered">
             <q-card-actions align="right">
 
@@ -36,6 +36,7 @@
                     </q-tooltip>
                     <q-icon name="o_color_lens" />
                 </q-btn>
+
                 <q-card v-if="showDropdownColors" class="dropdownColors-Container">
                     <div @mouseleave="toggleDropdownColor" class="Colors-Container">
                         <q-btn :class="headerClasses" class="color-btn" round size="10px" icon="o_format_color_reset"
@@ -46,8 +47,8 @@
                         <q-btn round size="10px" style="background-color: #eaffc2;" @click="changeColor('lime')" />
                         <q-btn round size="10px" style="background-color: #e79eff;" @click="changeColor('lightViolet')" />
                     </div>
-
                 </q-card>
+
                 <q-btn flat round size="10px">
                     <q-tooltip v-if="data.archived === 0" anchor="bottom middle" self="center middle">
                         Archivar
@@ -58,24 +59,27 @@
                     <q-icon v-if="data.archived === 0" name="o_archive" @click="archiveNote" v-model="archive" />
                     <q-icon v-else name="o_unarchive" @click="unarchiveNote" v-model="archive" />
                 </q-btn>
+
                 <q-btn flat round size="10px" @click="toggleDropdownMenu">
                     <q-tooltip anchor="bottom middle" self="center middle">
                         Más
                     </q-tooltip>
                     <q-icon name="more_vert" />
                 </q-btn>
+                
                 <div @mouseleave="toggleDropdownMenu" class="dropdownMenu-container">
                     <q-btn v-if="showDropdownMenu" class="dropdownBtn" label="Borrar la nota" @click="deleteNote"></q-btn>
                 </div>
             </q-card-actions>
         </div>
+
         <ModalNote :show-dialog="showModalNote" :data="data" @update:show-dialog="showModalNote = $event" />
     </q-card>
 </template>
 
 <script>
 import { notesStore } from "src/stores/dataStore"
-import { computed, defineComponent, ref } from "vue"
+import { defineComponent } from "vue"
 
 import ModalNote from "./ModalNote.vue"
 import { deleteNote } from "src/boot/axiosActions"
@@ -95,26 +99,18 @@ export default defineComponent({
             isHovered: false,
             showDropdownMenu: false,
             showDropdownColors: false,
-            //bgColor: this.data.color
+            bgColor: this.data.color
         }
     },
-    setup(props) {
+    setup() {
         const noteData = notesStore();
-        const bgColor = ref(props.data.color)
+
         return {
             noteData,
-            bgColor
-            
-        }
-    },
-    computed:{
-        getData(){
-            return this.noteData.getData
         }
     },
     methods: {
         changeColor(color) {
-            console.log('entro');
             this.bgColor = color;
             this.updateNote()
         },
@@ -156,11 +152,11 @@ export default defineComponent({
         unarchiveNote() {
             this.data.archived = 0
             console.log('aquiencard', this.data.archived);
-            this.updateNoteForUnarchive(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived)
+            this.updateNoteForUnarchive(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived, this.bgColor, this.deleted)
         },
         async updateNoteForUnarchive() {
             try {
-                const response = await this.noteData.updateNote(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived)
+                const response = await this.noteData.updateNote(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived, this.bgColor, this.deleted)
                 const dataStore = notesStore();
                 dataStore.setData(response.data)
                 dataStore.setArchivedNotes(response.data)
@@ -169,9 +165,8 @@ export default defineComponent({
             }
         },
         async updateNote() {
-            console.log('update');
             try {
-                const response = await this.noteData.updateNote(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived, this.bgColor)
+                const response = await this.noteData.updateNote(this.data.id, this.data.title, this.data.content, this.data.pinned, this.data.archived, this.bgColor, this.deleted)
                 const dataStore = notesStore();
                 dataStore.setData(response.data)
                 this.getData
