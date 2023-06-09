@@ -1,6 +1,6 @@
 <template>
     <q-page>
-        <!-- ESTE AVISO DE LA LONGITUD DE LA DATA OBTENIDA
+        <!-- ESTE AVISO DEPENDE DE LA LONGITUD DE LA DATA OBTENIDA
             SI NO HAY DATA, SE MUESTRA EL AVISO -->
         <div class="notFound text-h6" v-if="notes.data?.length === 0">
             <q-icon name="o_archive" size="120px" />
